@@ -1,10 +1,10 @@
 @extends('layouts.mail')
 @section('content')
 
-    <p>Получено письмо от</p>
-    <p>{{$form->name}}</p>
-    <p>    {{$form->text}}</p>
-    <p>{{$form->user->email}}</p>
+    <p>Данные формы</p>
+    <p>Имя:{{$form->name}}</p>
+    <p>Текст:{{$form->text}}</p>
+    <p>Email:{{$form->user->email}}</p>
     <p>{{$form->comment}}</p>
     @if($isAdmin)
         <p>Ссылка на страницу пользователя: {{route('form.userForm', ['id'=>$form->user->id])}}</p>

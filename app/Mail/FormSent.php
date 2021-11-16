@@ -19,9 +19,10 @@ class FormSent extends Mailable
      *
      * @return void
      */
-    public function __construct(Form $form, $isAdmin = false)
+    public function __construct( $formId, $isAdmin = false)
     {
-        $this->form = $form->with(['user'])->first();
+
+        $this->form = Form::with(['user'])->find($formId);
         $this->isAdmin=$isAdmin;
     }
 

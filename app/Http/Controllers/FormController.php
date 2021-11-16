@@ -39,8 +39,8 @@ class FormController extends Controller
         $validated['user_id'] = $user->id;
         $form = Form::create($validated);
 
-        Mail::to($user->email)->send(new FormSent($form));
-        Mail::to('personaj.5000@gmail.com')->send(new FormSent($form,true));
+        Mail::to($user->email)->send(new FormSent($form->id));
+        Mail::to('personaj.5000@gmail.com')->send(new FormSent($form->id,true));
 
         return redirect()->route('form.create')->with('success','Форма отправлена');
     }
