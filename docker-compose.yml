@@ -1,0 +1,59 @@
+version: "3.7"
+services:
+  app:
+    build:
+      args:
+        user: testaw_user
+        uid: 1000
+      context: ./
+      dockerfile: Dockerfile
+    image: testaw
+    container_name: testaw-app
+    restart: unless-stopped
+    working_dir: /var/www/
+    volumes:
+      - ./:/var/www
+    networks:
+      - testaw
+
+  db:
+    image: mysql:5.7
+    container_name: testaw-db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_USER: ${DB_USERNAME}
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    ports:
+      - "3306:3306"
+    networks:
+      - testaw
+
+  nginx:
+    image: nginx:alpine
+    container_name: testaw-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - ./:/var/www
+      - ./docker-compose/nginx/conf.d:/etc/nginx/conf.d
+      - ./docker-compose/nginx/logs:/var/log/nginx
+    networks:
+      - testaw
+  redis:
+    image: redis
+    restart: always
+    container_name: testaw-redis
+    user: "1000:1000"
+    command: redis-server --requirepass eWG9z9EeWteW7rCsG9z9E
+    ports:
+      - "6379"
+    networks:
+      - testaw
+networks:
+  testaw:
+    driver: bridge
